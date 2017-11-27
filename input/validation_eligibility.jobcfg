@@ -1,0 +1,21 @@
+#Description : formatValidation Job Configuration file for eligibility validation
+#jobName : formatValidation
+#
+#$HADOOP jar $JAR -job formatValidation -clientId $clientId -input /user/hdfs/$clientId/input/claims/Eligibility.csv -output /user/hdfs/$clientId/Eligibility/ --recordType Eligibility --configFile classPath:config/client_config.properties --layout eligibilityLayout.csv
+#
+#--------------- Mandatory --------------------------
+
+inputLayoutFile     = /Users/ryannguyen/ScalaProjects/sparksql-examples/input/eligibilityLayout.csv
+inputFile           = /Users/ryannguyen/ScalaProjects/sparksql-examples/input/data.csv
+#inputFile           = /Users/ryannguyen/ScalaProjects/sparksql-examples/input/dataRedact.csv/*.csv
+hasHeader      = false
+dataDelimiter      = ,
+lineDelimiter      = \n
+recordType          = Eligibility
+outputDirectory     = /Users/ryannguyen/ScalaProjects/sparksql-examples/output/dataRedact
+outputIntMemberId   = /Users/ryannguyen/ScalaProjects/sparksql-examples/data/IntegerMemberId
+trapDirectory       = traps/layout/Eligibility
+clientConfigFile    = client_config.properties
+
+#--------------- Optional --------------------------
+#dotFile            = dot/formatValidation_Eligibility.dot

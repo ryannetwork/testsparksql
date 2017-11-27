@@ -1,0 +1,14 @@
+#Position;ScrubName;DisplayName;StoredName;Type;Format;Parent
+1;record_id;rowID;rowID;string;;
+2;id;memberId;memberId;string;;
+3;firstname;memberFirstName;memberFirstName;string;;
+4;lastname;memberLastName;memberLastName;string;;
+5;dob;memberDOB;memberDOB;string;;
+6;gender;memberGender;memberGender;string;;
+7;hicn;memberHICN;memberHICN;string;;
+8;address1;address1;address1;string;;
+9;address2;address2;address2;string;;
+10;city;city;city;string;;
+11;state;state;state;string;;
+12;zip;zip;zip;string;;
+13;phone;phone;phone;string;;
