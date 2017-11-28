@@ -5,15 +5,15 @@
 #
 #--------------- Mandatory --------------------------
 
-inputLayoutFile     = /Users/ryannguyen/ScalaProjects/sparksql-examples/src/main/resources/eligibilityLayout.csv
-inputFile           = /Users/ryannguyen/ScalaProjects/sparksql-examples/src/main/resources/data.csv
-#inputFile           = /Users/ryannguyen/ScalaProjects/sparksql-examples/src/main/resources/dataRedact.csv/*.csv
+inputLayoutFile     = C:\\Projects\\spark\\testsparksql\\input\\eligibilityLayout.csv
+inputFile           = C:\\Projects\\spark\\testsparksql\\input\\resources\\data.csv
+#inputFile           = C:\\Projects\\spark\\testsparksql\\input\\dataRedact.csv/*.csv
 hasHeader      = false
 dataDelimiter      = ,
 lineDelimiter      = \n
 recordType          = Eligibility
-outputDirectory     = /Users/ryannguyen/ScalaProjects/sparksql-examples/data/Eligibility
-outputIntMemberId   = /Users/ryannguyen/ScalaProjects/sparksql-examples/data/IntegerMemberId
+outputDirectory     = C:\\Projects\\spark\\testsparksql\\output\\Eligibility
+outputIntMemberId   = C:\\Projects\\spark\\testsparksql\\input\\IntegerMemberId
 trapDirectory       = traps/layout/Eligibility
 clientConfigFile    = client_config.properties
 

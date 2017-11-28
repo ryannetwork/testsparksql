@@ -1,10 +1,13 @@
 package Objects
 
+import fakers._
 
 import org.apache.spark.sql._
 import Common.Utilities._
 import org.apache.spark.sql.functions.udf
 import org.apache.log4j.{Level, Logger}
+import org.apache.spark.sql._
+import org.apache.spark.sql.functions._
 
 object MainEntry {
 
@@ -18,6 +21,7 @@ object MainEntry {
         "Usage: filename.jar filepath.jobcfg")
       System.exit(1)
     }
+
 
 
     //    val clientId = args(0)+"/"
@@ -47,46 +51,38 @@ object MainEntry {
 
     val sourceLayoutFile = jobConfigProps("inputLayoutFile")
 
-    //val clientType = clientConfigProps("clientType")
-    //val eoc = clientConfigProps("cycleEndDate")
-
     //spark configurations
     val sparkSession = SparkSession.builder().appName("Simple Application")
       .master("local")
       //.config("", "")
       //.config("spark.sql.warehouse.dir", ".")
+      .config("spark.sql.warehouse.dir", "C:/tmp")
+      .config("spark.local.dir", "c:/tmp")
+       .config("spark.driver.memory", "1g")
+      .config("spark.executor.memory", "2g")
       .getOrCreate()
 
     import sparkSession.implicits._
-
     val sc = sparkSession.sparkContext
     val sqlContext = sparkSession.sqlContext
 
     //schema generation for the input source
     val schema = Dataframes.dynamicSchema(sourceLayoutFile)
-    println(schema.prettyJson)
-
-
+//    println(schema.prettyJson)
     println(sourceFile)
-
 
     //sc.hadoopConfiguration.set("textinputformat.record.delimiter", "\n")
     val sourceDataRdd = sc.textFile(sourceFile)
     //println(sourceDataRdd.count())
+    //sourceDataRdd.foreach(println)
 
-
-    sourceDataRdd.foreach(println)
-
-    /*
     val eligibilityDF = Dataframes.genDataFrame(sqlContext, sourceDataRdd, schema,  dataDelimiter,hasHeader)
+                      .cache()
     eligibilityDF.show()
-
-
 
    // eligibilityDF
    //   .na.drop("all")
    //   .na.fill("U",Seq("gender")).show(false) // empty column in gender column fill with unknown
-
     /*
     val firstnames = sc.textFile("/Users/ryannguyen/ScalaProjects/sparksql-examples/src/main/resources/firstNameRedact.csv")
                         .collect().toList;
@@ -100,21 +96,26 @@ object MainEntry {
   */
 
     eligibilityDF.createOrReplaceTempView("Members");
-
     val df2 = sparkSession.sql("SELECT * FROM Members")
     df2.show()
 
-    val randFirstName = udf((value: String) => faker.Name.firstName)
-    val randLastName = udf((value: String) => faker.Name.lastName)
-    val randPhone = udf((value: String) => faker.PhoneNumber.phoneNumber.filter(_.isDigit))
-    val randAddress1 = udf((value: String) => faker.Address.streetAddress(false))
-    val randCity = udf((value: String) => faker.Address.city)
-    val randState = udf((value: String) => faker.Address.stateAbbr)
-    val randZip = udf((value: String) => faker.Address.zipCode)
+    val randFirstName = udf((value: String) => fakerData.faker.name.firstName)
+    val randLastName = udf((value: String) => fakerData.faker.name.lastName)
+    val randPhone = udf((value: String) => fakerData.faker.phoneNumber.phoneNumber.filter(_.isDigit))
+    val randAddress1 = udf((value: String) => fakerData.faker.address.streetAddress(false))
+    val randCity = udf((value: String) => fakerData.faker.address.city)
+    val randState = udf((value: String) => fakerData.faker.address.stateAbbr)
+    val randZip = udf((value: String) => fakerData.faker.address.zipCode)
+    val rndMemberId = udf((value: String) => fakerData.faker.code.isbn13)
 
 
+    //TO_DATE(CAST(UNIX_TIMESTAMP("dob", ' yyyy-MM-dd') AS TIMESTAMP))
 
-    val df3 = eligibilityDF.sample(false, 0.0001, 0)
+    val df3 = eligibilityDF.filter(eligibilityDF("dob").isNotNull && eligibilityDF("hicn").isNotNull)
+      .withColumn("Year",year($"dob"))
+      .withColumn("month", month($"dob"))
+       .where('year > 1970 )
+      .sample(false, 0.01, 0)
           .withColumn("gender", CustomRules.defaultGender(eligibilityDF.col("gender")))
           .withColumn("firstname", randFirstName(eligibilityDF("firstname") ))
             .withColumn("lastName",   randLastName(eligibilityDF("lastname") ))
@@ -123,6 +124,11 @@ object MainEntry {
               .withColumn("state",       randState(eligibilityDF("state") ))
               .withColumn("zip",           randZip(eligibilityDF("zip") ))
               .withColumn("phone",       randPhone(eligibilityDF("phone") ))
+              .withColumnRenamed("record_id", "rowNum")
+              .withColumn("memberid_new",       rndMemberId(eligibilityDF("memberid") ))
+               .withColumnRenamed("memberid", "memberid")
+              .drop("address2")
+
     df3.show()
 
     df3
@@ -132,18 +138,11 @@ object MainEntry {
         .option("delimiter", ",")
         .option("header", true)
         .csv(outputFile)
-
-
-
-
-
     // }
 
     //stopping sparkContext
     sc.stop()
 
-*/
-    println("resource files")
 
     //val path = getClass.getResource("/")
     //val folder = new File(path.getPath)

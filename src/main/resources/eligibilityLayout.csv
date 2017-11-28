@@ -1,6 +1,6 @@
 #Position;ScrubName;DisplayName;StoredName;Type;Format;Parent
 1;record_id;rowID;rowID;string;;
-2;id;memberId;memberId;string;;
+2;memberid;memberid;memberId;string;;
 3;firstname;memberFirstName;memberFirstName;string;;
 4;lastname;memberLastName;memberLastName;string;;
 5;dob;memberDOB;memberDOB;string;;

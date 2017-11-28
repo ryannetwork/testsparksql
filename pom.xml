@@ -7,7 +7,7 @@
 
 	<properties>
 		<spark.version>2.1.0</spark.version>
-		<scala.version>2.12.4</scala.version>
+		<scala.version>2.11.12</scala.version>
 		<chill.version>0.7.2</chill.version>
 		<algebird.version>0.11.0</algebird.version>
 		<kafka.clients.version>0.8.2.1</kafka.clients.version>
@@ -145,11 +145,27 @@
 			<version>1.19</version>
 		</dependency>
 
+
+		<!-- https://mvnrepository.com/artifact/com.github.javafaker/javafaker -->
+		<dependency>
+			<groupId>com.github.javafaker</groupId>
+			<artifactId>javafaker</artifactId>
+			<version>0.14</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<version>6.2.2.jre8</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
 		<sourceDirectory>src/main/scala</sourceDirectory>
-		<testSourceDirectory>src/test/scala</testSourceDirectory>
+		<!--<testSourceDirectory>src/test/scala</testSourceDirectory>-->
 		<plugins>
 			<plugin>
 				<groupId>org.scala-tools</groupId>
@@ -159,7 +175,7 @@
 					<execution>
 						<goals>
 							<goal>compile</goal>
-							<goal>testCompile</goal>
+							<!--<goal>testCompile</goal>-->
 						</goals>
 						<configuration>
 						</configuration>
