@@ -18,23 +18,23 @@ package Common.Utilities
       if (value == null || StringType.equals(struct.dataType)) {
         //do nothing
       } else if (IntegerType.equals(struct.dataType)) {
-        if (!value.toString.matches(RegexPatterns.INT_PATTERN)) {
+        if (!value.toString.matches(Regex.INT_PATTERN)) {
           throw new RuntimeException("Invalid format for field: " + struct.name + " Type: " + struct.dataType + " Value: " + value)
         }
       } else if (DateType.equals(struct.dataType)) {
-        if (!value.toString.matches(RegexPatterns.DATE_PATTERN)) {
+        if (!value.toString.matches(Regex.DATE_PATTERN)) {
           throw new RuntimeException("Invalid format for field: " + struct.name + " Type: " + struct.dataType + " Value: " + value)
         }
       } else if (DoubleType.equals(struct.dataType)) {
-        if (!value.toString.matches(RegexPatterns.FLOAT_PATTERN)) {
+        if (!value.toString.matches(Regex.FLOAT_PATTERN)) {
           throw new RuntimeException("Invalid format for field: " + struct.name + " Type: " + struct.dataType + " Value: " + value)
         }
       } else if (LongType.equals(struct.dataType)) {
-        if (!value.toString.matches(RegexPatterns.INT_PATTERN)) {
+        if (!value.toString.matches(Regex.INT_PATTERN)) {
           throw new RuntimeException("Invalid format for field: " + struct.name + " Type: " + struct.dataType + " Value: " + value)
         }
       } else if (FloatType.equals(struct.dataType)) {
-        if (!value.toString.matches(RegexPatterns.FLOAT_PATTERN)) {
+        if (!value.toString.matches(Regex.FLOAT_PATTERN)) {
           throw new RuntimeException("Invalid format for field: " + struct.name + " Type: " + struct.dataType + " Value: " + value)
         }
       }

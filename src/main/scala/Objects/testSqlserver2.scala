@@ -2,8 +2,7 @@ package Objects
 import java.sql.DriverManager
 
 import org.apache.log4j.{Level, Logger}
-import org.apache.spark.sql.SparkSession
-
+import org.apache.spark.sql.{SaveMode, SparkSession}
 object testSqlserver2  {
 
   case class Member (record_id: String,
@@ -20,6 +19,21 @@ object testSqlserver2  {
                      zip: String,
                      phone: String)
 
+  case class Members (
+                     memberid: String,
+                     firstname: String,
+                     lastname: String,
+                     dob: String,
+                     gender: String,
+                     hicn: String,
+                     address1: String,
+                     address2: String,
+                     city: String,
+                     state: String,
+                     zip: String,
+                     phone: String)
+
+
   def main(args: Array[String]): Unit = {
     Logger.getLogger("org").setLevel(Level.ERROR)
     Logger.getLogger("akka").setLevel(Level.ERROR)
@@ -32,11 +46,13 @@ object testSqlserver2  {
     val spark = SparkSession
       .builder()
       .appName("Spark SQL data sources example")
-      .config("spark.some.config.option", "some-value")
-      .config("spark.driver.memory", "3")
+      .config("spark.local.dir", "c:\\tmp\\spark\\")
+      .config("spark.executor.memory", "2g")
+      .config("spark.cassandra.connection.host", "localhost")
       .master("local")
       .getOrCreate()
     import spark.implicits._
+
      val memberDS = spark.read.textFile("C:\\Projects\\spark\\testsparksql\\input\\data.csv")
           .map(x => x.split(",")).map(m => Member(m(0),m(1),m(2),m(3),m(4),
        m(5),m(6),m(7),m(8),m(9),
@@ -56,7 +72,6 @@ object testSqlserver2  {
     val timeDifference = timeAfter - timeBefore
 
     println("TIME difference:" + timeDifference)
-
 
     val conn = DriverManager.getConnection(url, username, password)
     val statement = conn.createStatement()
@@ -89,7 +104,8 @@ object testSqlserver2  {
     val timeDifference2 = timeAfter2 - timeBefore2
     println("TIME difference: " + timeDifference2)
 
-
+    spark.stop()
+    spark.close()
 
   }
 }

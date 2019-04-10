@@ -1,0 +1,14 @@
+#Position;ScrubName;DisplayName;StoredName;Type;Format;Parent
+1;record_id;rowID;rowID;string;\d+;
+2;memberid;memberid;memberId;string;^\w+$;
+3;firstname;memberFirstName;memberFirstName;string;[A-Za-z0-9_']+\s?;
+4;lastname;memberLastName;memberLastName;string;[A-Za-z0-9_']+\s?;
+5;dob;memberDOB;memberDOB;string;^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$;
+6;gender;memberGender;memberGender;string;^(?:m|M|male|Male|f|F|female|Female)$;
+7;hicn;memberHICN;memberHICN;string;;
+8;address1;address1;address1;string;;
+9;address2;address2;address2;string;;
+10;city;city;city;string;;
+11;state;state;state;string;;
+12;zip;zip;zip;string;;
+13;phone;phone;phone;string;;

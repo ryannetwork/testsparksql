@@ -21,21 +21,21 @@ object testSqlserver {
       //.config("spark.sql.warehouse.dir", ".")
       .config("spark.driver.memory", "1g")
       .config("spark.executor.memory", "2g")
+      .config("spark.local.dir", "c:\\tmp\\spark\\")
       .getOrCreate()
 
 
     val jdbcDF = sparkSession.read.format("jdbc").
-      option("url", "jdbc:sqlserver://localhost:1433;databaseName=AdventureWorks2016CTP3").
+      option("url", "jdbc:sqlserver://localhost:1433;databaseName=AdventureWorks2016CTP3;").
       option("driver", "com.microsoft.sqlserver.jdbc.SQLServerDriver").
       option("dbtable", "Person.Address").
       option("user", "sa").
       option("password", "P@ssword12").load()
 
-
     jdbcDF.show(10)
 
-
-
+    sparkSession.stop()
+    sparkSession.close()
 
   }
 }

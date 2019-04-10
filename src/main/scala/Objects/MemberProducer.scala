@@ -1,26 +1,34 @@
 package Objects
-import java.io.FileWriter
+import java.io.{File, FileWriter}
 import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 
-import Config.Settings
+import Config.ConfigLoader
+import org.apache.commons.io.FileUtils
 
 import scala.util.Random
-object MemberProducer extends App {
-    // WebLog config
-    val FirstNames = scala.io.Source.fromInputStream(getClass.getResourceAsStream("/firstName.csv")).getLines().toArray
-    val LastNames = scala.io.Source.fromInputStream(getClass.getResourceAsStream("/lastName.csv")).getLines().toArray
+object MemberProducer  {
 
-  val wlc = Settings.WebLogGen
-    val genders = Array("F", "M")
+    def main(args: Array[String]): Unit = {
+      val FirstNames =  scala.io.Source.fromInputStream(getClass.getResourceAsStream("/firstName.csv")).getLines().toArray
+      val LastNames = scala.io.Source.fromInputStream(getClass.getResourceAsStream("/lastName.csv")).getLines().toArray
 
-    val rnd = new Random()
-    val filePath = wlc.filePath
-    val destPath = wlc.destPath
+      val genders = Array("F", "M")
 
-     val fw = new FileWriter(filePath, true)
+      val rnd = new Random()
+      val jobConfigFile = args(0)
+      println(jobConfigFile)
+      val config = new ConfigLoader(jobConfigFile);
+      val filePath = config.MembersConfig.filePath
 
-      for (iteration <- 1 to wlc.records) {
+      FileUtils.deleteQuietly(new File(filePath))
+
+      val fw = new FileWriter(filePath, true)
+
+      val header = "record_id,memberid,firstName,lastName,dob,gender,hicn,address1,address2,city,state,zip,phone\n"
+      fw.write(header)
+
+      for (iteration <- 1 to config.MembersConfig.records) {
 
         var memberid = (rnd.alphanumeric take 12 mkString("")).toUpperCase
         var hicn = (rnd.alphanumeric take 12 mkString("")).toUpperCase
@@ -38,12 +46,13 @@ object MemberProducer extends App {
 
         val dob = fakers.fakerData.dob
 
-
         val line = s"$iteration,$memberid,$firstName,$lastName,$dob,$gender,$hicn,$address1,$address2,$city,$state,$zip,$phone\n"
 
         fw.write(line)
 
       }
       fw.close()
+
+    }
 
     }
